@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lâmina 82 Barbearia (site de demonstração)</title>
+<meta name="description" content="Site de demonstração de uma barbearia fictícia: preços, horários e agendamento pelo WhatsApp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1D2B53">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Lâmina 82 Barbearia (site de demonstração)">
+<meta property="og:description" content="Preços, horários e agendamento pelo WhatsApp em um site de 1 página.">
+<meta property="og:url" content="https://aparece-sites.github.io/demo-barbearia/">
+<meta property="og:image" content="https://aparece-sites.github.io/demo-barbearia/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>">
+<style>
+@font-face{font-family:"Oswald";src:url("fonts/oswald.woff2") format("woff2");font-weight:200 700;font-display:swap}
+@font-face{font-family:"Manrope";src:url("fonts/manrope.woff2") format("woff2");font-weight:200 800;font-display:swap}
+
+/* Cores e fontes: para outro cliente, mude só aqui */
+:root{
+  --navy:#1D2B53;--navy-2:#2B3D70;
+  --red:#C62F2B;--red-dark:#A52420;--red-light:#FF6B5E;
+  --white:#FFFFFF;--paper:#EEF1F5;--steel:#5B6478;--line:#D5DAE3;--ok:#1F9D55;
+  --display:"Oswald","Arial Narrow",Arial,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --stripes:repeating-linear-gradient(-45deg,var(--red) 0 16px,#fff 16px 32px,var(--navy) 32px 48px,#fff 48px 64px);
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:17px;line-height:1.55;color:var(--navy);background:var(--white);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{width:min(100% - 32px,1120px);margin-inline:auto}
+h1,h2{font-family:var(--display);font-weight:600;line-height:1;margin:0}
+h2{font-size:clamp(36px,7vw,56px);margin-bottom:24px}
+
+/* Faixa de demonstração */
+.demo-bar{background:var(--paper);border-bottom:1px solid var(--line);font-size:14px;line-height:1.4}
+.demo-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px;padding:9px 0}
+.demo-bar p{margin:0;color:var(--steel)}
+.demo-bar a{font-weight:800;color:var(--red-dark);text-underline-offset:3px}
+
+/* Topo */
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-mark{width:14px;height:40px;border-radius:7px;background:repeating-linear-gradient(-45deg,var(--red) 0 5px,#fff 5px 10px,var(--navy) 10px 15px,#fff 15px 20px);box-shadow:0 0 0 2px var(--navy)}
+.logo-name{display:grid;font-family:var(--display);font-weight:600;font-size:25px;line-height:1}
+.logo-name small{font-family:var(--body);font-size:12px;font-weight:700;color:var(--steel);margin-top:3px;letter-spacing:.02em}
+.nav{display:none}
+
+/* Botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border:2px solid transparent;border-radius:999px;font:700 16px/1.1 var(--body);text-decoration:none;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-dark)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:var(--navy-2)}
+.btn-ghost{background:transparent;color:var(--navy);border-color:var(--navy)}
+.btn-ghost:hover{background:var(--navy);color:#fff}
+.btn-sm{min-height:42px;padding:0 18px;font-size:15px}
+.btn-wide{width:100%}
+
+/* Abertura: o poste de barbearia girando */
+.hero{padding:32px 0 52px}
+.hero-in{display:grid;grid-template-columns:38px 1fr;gap:18px}
+.pole{display:flex;flex-direction:column;align-items:center}
+.pole::before,.pole::after{content:"";flex:none;width:100%;height:16px;background:linear-gradient(90deg,#8E97A8,#F5F7FA 42%,#C9CFD9 58%,#727B8D)}
+.pole::before{border-radius:12px 12px 4px 4px}
+.pole::after{border-radius:4px 4px 12px 12px}
+.pole-glass{--per:calc(64px * 1.41421356);flex:1;width:74%;min-height:240px;
+  background:linear-gradient(90deg,rgba(0,0,0,.30),rgba(0,0,0,0) 28%,rgba(255,255,255,.55) 46%,rgba(255,255,255,0) 60%,rgba(0,0,0,.32)),var(--stripes);
+  background-size:100% 100%,var(--per) var(--per);
+  animation:pole 2.4s linear infinite}
+@keyframes pole{from{background-position:0 0,0 0}to{background-position:0 0,0 calc(var(--per) * -1)}}
+.status{display:inline-flex;align-items:center;gap:8px;margin:0;padding:6px 14px 6px 12px;border-radius:999px;background:var(--paper);font-size:14px;font-weight:700}
+.status::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:#8A93A6}
+.status.is-open::before{background:var(--ok);box-shadow:0 0 0 4px rgba(31,157,85,.18)}
+.hero h1{font-size:clamp(52px,14.5vw,128px);line-height:.92;letter-spacing:-.005em;margin:16px 0 18px}
+.lead{font-size:clamp(17px,2.3vw,20px);color:var(--steel);max-width:36ch;margin:0 0 26px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-cta .btn{flex:1 1 auto}
+.facts{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px 24px;font-size:15px;font-weight:700}
+.facts li{display:flex;align-items:center;gap:8px}
+.facts li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--red)}
+
+/* Quadro de preços, como o da parede */
+.board-sec{padding:48px 0 56px;background:var(--paper)}
+.board{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-radius:6px;padding:40px 20px 24px}
+.board::before{content:"";position:absolute;inset:0 0 auto 0;height:10px;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,#fff 10px 20px,var(--navy-2) 20px 30px,#fff 30px 40px)}
+.board h2{color:#fff}
+.prices{list-style:none;margin:0;padding:0;display:grid;column-gap:56px}
+.price{padding:16px 0 12px;border-top:1px solid rgba(255,255,255,.14)}
+.price-main{display:flex;align-items:baseline;gap:12px}
+.price-name{font-family:var(--display);font-weight:500;font-size:clamp(22px,4.6vw,28px);line-height:1.15}
+.dots{flex:1;min-width:20px;border-bottom:2px dotted rgba(255,255,255,.38);transform:translateY(-5px)}
+.price-val{font-family:var(--display);font-weight:600;font-size:clamp(24px,5vw,30px);color:var(--red-light);white-space:nowrap}
+.price-sub{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:15px;color:rgba(255,255,255,.75)}
+.link-btn{flex:none;background:none;border:0;padding:10px 0;color:#fff;font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* Agendamento */
+.book-sec{padding:64px 0}
+.book-in{display:grid;gap:28px}
+.book-head p{margin:0;color:var(--steel);max-width:40ch}
+.book{display:grid;gap:24px}
+.book fieldset{border:0;margin:0;padding:0;min-width:0}
+.book legend,.field>span{display:block;padding:0;margin-bottom:10px;font-weight:800;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative;display:inline-flex}
+.chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.chip span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:2px solid var(--line);border-radius:999px;background:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.chip:hover span{border-color:var(--navy)}
+.chip input:checked+span{background:var(--navy);border-color:var(--navy);color:#fff}
+.chip input:focus-visible+span{outline:3px solid var(--red);outline-offset:2px}
+.field{display:block}
+.field input{width:100%;min-height:52px;padding:0 16px;border:2px solid var(--line);border-radius:10px;font:500 17px var(--body);color:var(--navy);background:#fff}
+.field input:focus{border-color:var(--navy)}
+.form-error{margin:0;color:var(--red-dark);font-weight:700}
+
+/* Horários e endereço */
+.info-sec{padding:64px 0;background:var(--paper)}
+.info-in{display:grid;gap:48px}
+.hours{width:100%;border-collapse:collapse}
+.hours th,.hours td{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;font-weight:600}
+.hours td{text-align:right;font-variant-numeric:tabular-nums}
+.hours .is-today th,.hours .is-today td{color:var(--red-dark);font-weight:800}
+.hours .is-today th::after{content:" (hoje)";font-weight:600}
+address{font-style:normal;font-size:21px;font-weight:800;line-height:1.35}
+.ref{margin:6px 0 22px;color:var(--steel)}
+.stack{display:grid;gap:10px;max-width:380px}
+
+/* Rodapé */
+.foot{background:var(--navy);color:rgba(255,255,255,.8);padding:36px 0 120px;font-size:15px}
+.foot-in{display:grid;gap:14px}
+.foot p{margin:0}
+.foot strong{color:#fff;font-family:var(--display);font-weight:600;font-size:22px}
+.foot a{color:#fff;font-weight:800}
+
+/* Botão fixo no celular */
+.mbar{position:fixed;inset:auto 0 0 0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+/* Aviso de demonstração */
+.modal{width:min(100% - 32px,440px);border:0;border-radius:18px;padding:26px 22px 22px;color:var(--navy)}
+.modal::backdrop{background:rgba(29,43,83,.6)}
+.modal h2{font-size:32px;margin-bottom:10px}
+.modal p{margin:0 0 16px;color:var(--steel)}
+.bubble{margin:0 0 18px;padding:12px 14px;border-radius:14px 14px 14px 4px;background:#DCF8C6;color:#111B21;font-size:15px;line-height:1.5;white-space:pre-wrap}
+.modal form{margin:0}
+
+@media (min-width:900px){
+  .nav{display:flex;gap:28px;font-weight:700;font-size:15px}
+  .nav a{text-decoration:none}
+  .nav a:hover{color:var(--red-dark)}
+  .hero{padding:64px 0 96px}
+  .hero-in{grid-template-columns:100px 1fr;gap:56px}
+  .pole::before,.pole::after{height:26px}
+  .hero-cta .btn{flex:0 0 auto}
+  .board-sec{padding:72px 0 88px}
+  .board{padding:56px 48px 36px}
+  .prices{grid-template-columns:1fr 1fr}
+  .book-sec{padding:96px 0}
+  .book-in{grid-template-columns:5fr 7fr;gap:64px;align-items:start}
+  .info-sec{padding:96px 0}
+  .info-in{grid-template-columns:1fr 1fr;gap:80px}
+  .mbar{display:none}
+  .foot{padding-bottom:36px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .pole-glass{animation:none}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar" role="note">
+  <div class="wrap demo-in">
+    <p>Site de demonstração. A Lâmina 82 é uma barbearia fictícia.</p>
+    <a href="https://wa.me/558299637875?text=Oi%2C%20Nicolas%21%20Vi%20o%20site%20de%20demonstra%C3%A7%C3%A3o%20da%20barbearia%20e%20quero%20um%20assim." target="_blank" rel="noopener">Quero um site assim</a>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#inicio" aria-label="Lâmina 82 Barbearia, início">
+      <span class="logo-mark" aria-hidden="true"></span>
+      <span class="logo-name">Lâmina 82<small>Barbearia</small></span>
+    </a>
+    <nav class="nav" aria-label="Seções do site">
+      <a href="#precos">Preços</a>
+      <a href="#agendar">Agendar</a>
+      <a href="#horarios">Horários</a>
+      <a href="#onde">Onde fica</a>
+    </nav>
+    <a class="btn btn-red btn-sm" href="#agendar">Agendar</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero-in">
+      <div class="pole" aria-hidden="true"><span class="pole-glass"></span></div>
+      <div class="hero-text">
+        <p class="status js-status" aria-live="polite">Vendo o horário de hoje…</p>
+        <h1 id="titulo">Corte na régua,<br>sem fila.</h1>
+        <p class="lead">Marque seu horário pelo WhatsApp e chegue na hora certa. Corte, barba e acabamento na navalha.</p>
+        <div class="hero-cta">
+          <a class="btn btn-red" href="#agendar">Agendar horário</a>
+          <a class="btn btn-ghost" href="#precos">Ver preços</a>
+        </div>
+        <ul class="facts">
+          <li>Hora marcada, sem fila</li>
+          <li>Pix, débito e crédito</li>
+          <li>Ambiente climatizado</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="board-sec" id="precos" aria-labelledby="t-precos">
+    <div class="wrap">
+      <div class="board">
+        <h2 id="t-precos">Serviços e preços</h2>
+        <ul class="prices">
+          <li class="price">
+            <div class="price-main"><span class="price-name">Corte masculino</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 35</span></div>
+            <div class="price-sub"><span>Tesoura e máquina, do seu jeito. 40 min.</span><button type="button" class="link-btn js-pick" data-service="Corte masculino">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Degradê</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 40</span></div>
+            <div class="price-sub"><span>Do zero ao alto, bem disfarçado. 45 min.</span><button type="button" class="link-btn js-pick" data-service="Degradê">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Barba</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 25</span></div>
+            <div class="price-sub"><span>Toalha quente e navalha. 30 min.</span><button type="button" class="link-btn js-pick" data-service="Barba">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Corte + barba</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 55</span></div>
+            <div class="price-sub"><span>Os dois juntos, sem pressa. 1 h.</span><button type="button" class="link-btn js-pick" data-service="Corte + barba">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Pezinho e acabamento</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 10</span></div>
+            <div class="price-sub"><span>Para manter o corte em dia. 15 min.</span><button type="button" class="link-btn js-pick" data-service="Pezinho e acabamento">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Sobrancelha</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 10</span></div>
+            <div class="price-sub"><span>Limpeza e desenho na navalha. 10 min.</span><button type="button" class="link-btn js-pick" data-service="Sobrancelha">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Corte infantil</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 30</span></div>
+            <div class="price-sub"><span>Para crianças até 10 anos. 30 min.</span><button type="button" class="link-btn js-pick" data-service="Corte infantil">Agendar este</button></div>
+          </li>
+          <li class="price">
+            <div class="price-main"><span class="price-name">Hidratação</span><span class="dots" aria-hidden="true"></span><span class="price-val">R$ 20</span></div>
+            <div class="price-sub"><span>Para cabelo e barba. 20 min.</span><button type="button" class="link-btn js-pick" data-service="Hidratação">Agendar este</button></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="book-sec" id="agendar" aria-labelledby="t-agendar">
+    <div class="wrap book-in">
+      <div class="book-head">
+        <h2 id="t-agendar">Agende em poucos toques</h2>
+        <p>Escolha o serviço, o dia e o período. A mensagem vai pronta para o WhatsApp e a barbearia responde confirmando o horário.</p>
+      </div>
+      <form class="book js-book" novalidate>
+        <fieldset><legend>Serviço</legend><div class="chips js-services"></div></fieldset>
+        <fieldset><legend>Dia</legend><div class="chips js-days"></div></fieldset>
+        <fieldset><legend>Período</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="periodo" value="manhã" checked><span>Manhã</span></label>
+            <label class="chip"><input type="radio" name="periodo" value="tarde"><span>Tarde</span></label>
+            <label class="chip"><input type="radio" name="periodo" value="noite"><span>Noite</span></label>
+          </div>
+        </fieldset>
+        <label class="field"><span>Seu nome</span><input name="nome" type="text" autocomplete="given-name" placeholder="Como devemos te chamar?"></label>
+        <p class="form-error js-error" role="alert" hidden></p>
+        <button class="btn btn-red btn-wide" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.5-5.2A8.5 8.5 0 1 1 21 12z"/></svg>Enviar pelo WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="info-sec" aria-label="Horários e endereço">
+    <div class="wrap info-in">
+      <div id="horarios">
+        <h2>Horários</h2>
+        <table class="hours js-hours">
+          <tbody>
+            <tr data-day="1"><th scope="row">Segunda</th><td>9h às 20h</td></tr>
+            <tr data-day="2"><th scope="row">Terça</th><td>9h às 20h</td></tr>
+            <tr data-day="3"><th scope="row">Quarta</th><td>9h às 20h</td></tr>
+            <tr data-day="4"><th scope="row">Quinta</th><td>9h às 20h</td></tr>
+            <tr data-day="5"><th scope="row">Sexta</th><td>9h às 20h</td></tr>
+            <tr data-day="6"><th scope="row">Sábado</th><td>8h às 18h</td></tr>
+            <tr data-day="0"><th scope="row">Domingo</th><td>Fechado</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="onde">
+        <h2>Onde fica</h2>
+        <address>Rua Exemplo, 82, Seu Bairro<br>Maceió, AL</address>
+        <p class="ref">Ao lado da praça do bairro.</p>
+        <div class="stack">
+          <button type="button" class="btn btn-navy js-out" data-link="maps" data-what="o Google Maps com o caminho até a barbearia">Abrir no Google Maps</button>
+          <button type="button" class="btn btn-ghost js-out" data-link="reviews" data-what="as avaliações reais da barbearia no Google">Ver avaliações no Google</button>
+          <button type="button" class="btn btn-ghost js-out" data-link="instagram" data-what="o Instagram da barbearia">Ver o Instagram</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p><strong>Lâmina 82 Barbearia</strong><br>Empresa fictícia, criada para mostrar como fica um site de 1 página.</p>
+    <p>Site feito por <a href="https://aparece-sites.github.io/">Aparece</a>.</p>
+  </div>
+</footer>
+
+<div class="mbar"><a class="btn btn-red btn-wide" href="#agendar">Agendar horário</a></div>
+
+<dialog class="modal js-modal" aria-labelledby="m-titulo">
+  <h2 id="m-titulo">Isto é uma demonstração</h2>
+  <p class="js-modal-text"></p>
+  <div class="bubble js-bubble" hidden></div>
+  <form method="dialog"><button class="btn btn-navy btn-wide">Entendi</button></form>
+</dialog>
+
+<script>
+/* ===== CONFIGURAÇÃO: no site de um cliente de verdade, mude só aqui ===== */
+const CONFIG = {
+  demo: true,             // no site do cliente: false
+  whatsapp: "",           // ex.: "5582999999999" (55 + DDD + número, só números)
+  links: { maps: "", reviews: "", instagram: "" },
+  name: "Lâmina 82",
+  tz: "America/Maceio",
+  // horários em minutos desde 0h (540 = 9h, 1200 = 20h); null = fechado
+  hours: { 0: null, 1: [540, 1200], 2: [540, 1200], 3: [540, 1200], 4: [540, 1200], 5: [540, 1200], 6: [480, 1080] }
+};
+/* ======================================================================== */
+
+const DAY = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+const DAY_SHORT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const smooth = () => matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+function clock(plusDays = 0) {
+  const d = new Date(Date.now() + plusDays * 864e5);
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+    timeZone: CONFIG.tz, weekday: "short", hour: "numeric", minute: "numeric",
+    day: "2-digit", month: "2-digit", hourCycle: "h23"
+  }).formatToParts(d).map(x => [x.type, x.value]));
+  return {
+    wd: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(p.weekday),
+    min: (+p.hour) * 60 + (+p.minute),
+    dm: `${p.day}/${p.month}`
+  };
+}
+const hh = m => { const h = Math.floor(m / 60), r = m % 60; return r ? `${h}h${String(r).padStart(2, "0")}` : `${h}h`; };
+
+function renderStatus() {
+  const el = $(".js-status");
+  const now = clock(), today = CONFIG.hours[now.wd];
+  let text = "", open = false;
+  if (today && now.min >= today[0] && now.min < today[1]) {
+    open = true; text = `Aberto agora, até as ${hh(today[1])}`;
+  } else {
+    for (let i = 0; i < 8; i++) {
+      const wd = (now.wd + i) % 7, h = CONFIG.hours[wd];
+      if (!h || (i === 0 && now.min >= h[0])) continue;
+      text = `Fechado agora. Abre ${i === 0 ? "hoje" : i === 1 ? "amanhã" : DAY[wd]} às ${hh(h[0])}`;
+      break;
+    }
+  }
+  el.textContent = text;
+  el.classList.toggle("is-open", open);
+}
+
+function markToday() {
+  const wd = clock().wd;
+  $$(".js-hours tr").forEach(tr => tr.classList.toggle("is-today", +tr.dataset.day === wd));
+}
+
+function buildBooking() {
+  const svc = $(".js-services");
+  $$(".price").forEach(li => {
+    const name = $(".price-name", li).textContent.trim();
+    const val = $(".price-val", li).textContent.trim();
+    svc.insertAdjacentHTML("beforeend",
+      `<label class="chip"><input type="radio" name="servico" value="${name} (${val})"><span>${name}</span></label>`);
+  });
+  const days = $(".js-days");
+  let n = 0;
+  for (let i = 0; i < 14 && n < 5; i++) {
+    const c = clock(i), h = CONFIG.hours[c.wd];
+    if (!h || (i === 0 && c.min > h[1] - 45)) continue;
+    const label = i === 0 ? "Hoje" : i === 1 ? "Amanhã" : `${DAY_SHORT[c.wd]} ${c.dm}`;
+    const value = i === 0 ? `hoje (${c.dm})` : i === 1 ? `amanhã (${c.dm})` : `${DAY[c.wd]} (${c.dm})`;
+    days.insertAdjacentHTML("beforeend",
+      `<label class="chip"><input type="radio" name="dia" value="${value}"${n === 0 ? " checked" : ""}><span>${label}</span></label>`);
+    n++;
+  }
+  // Se o primeiro dia é hoje, já marca o período que ainda dá tempo
+  const first = $('input[name="dia"]:checked');
+  if (first && first.value.startsWith("hoje")) {
+    const m = clock().min, per = m < 720 ? "manhã" : m < 1080 ? "tarde" : "noite";
+    $(`input[name="periodo"][value="${per}"]`).checked = true;
+  }
+}
+
+function showDemo(text, bubble) {
+  const m = $(".js-modal");
+  $(".js-modal-text", m).textContent = text;
+  const b = $(".js-bubble", m);
+  b.hidden = !bubble;
+  b.textContent = bubble || "";
+  m.showModal();
+}
+
+function sendWhatsApp(msg) {
+  if (CONFIG.demo || !CONFIG.whatsapp) {
+    showDemo("No site de verdade, este botão abre o WhatsApp da barbearia com esta mensagem pronta:", msg);
+    return;
+  }
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+}
+
+document.addEventListener("click", e => {
+  const pick = e.target.closest(".js-pick");
+  if (pick) {
+    const input = $$('input[name="servico"]').find(x => x.value.startsWith(pick.dataset.service + " ("));
+    if (input) input.checked = true;
+    $("#agendar").scrollIntoView({ behavior: smooth() });
+    if (input) setTimeout(() => input.focus({ preventScroll: true }), 450);
+    return;
+  }
+  const out = e.target.closest(".js-out");
+  if (out) {
+    const url = CONFIG.links[out.dataset.link];
+    if (CONFIG.demo || !url) showDemo(`No site de verdade, este botão abre ${out.dataset.what}.`);
+    else window.open(url, "_blank", "noopener");
+  }
+});
+
+$(".js-book").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.currentTarget, err = $(".js-error", f), el = f.elements;
+  const servico = el.servico ? el.servico.value : "";
+  if (!servico) {
+    err.textContent = "Escolha um serviço para continuar.";
+    err.hidden = false;
+    $('input[name="servico"]').focus();
+    return;
+  }
+  err.hidden = true;
+  const nome = el.nome.value.trim();
+  const msg = [
+    `Olá! Quero agendar um horário na ${CONFIG.name}.`,
+    `Serviço: ${servico}`,
+    `Dia: ${el.dia.value}`,
+    `Período: ${el.periodo.value}`,
+    nome && `Nome: ${nome}`
+  ].filter(Boolean).join("\n");
+  sendWhatsApp(msg);
+});
+
+buildBooking();
+renderStatus();
+markToday();
+setInterval(renderStatus, 60000);
+</script>
+</body>
+</html>

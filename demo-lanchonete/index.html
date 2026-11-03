@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coqueiral Lanches (site de demonstração)</title>
+<meta name="description" content="Site de demonstração de uma lanchonete fictícia: cardápio com preços e pedido pronto pelo WhatsApp.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#3F1A4B">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Coqueiral Lanches (site de demonstração)">
+<meta property="og:description" content="Cardápio com preços e pedido que chega pronto no WhatsApp, sem app de delivery.">
+<meta property="og:url" content="https://aparece-sites.github.io/demo-lanchonete/">
+<meta property="og:image" content="https://aparece-sites.github.io/demo-lanchonete/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥥</text></svg>">
+<style>
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage.woff2") format("woff2");font-weight:200 800;font-display:swap}
+@font-face{font-family:"DM Sans";src:url("fonts/dmsans.woff2") format("woff2");font-weight:100 1000;font-display:swap}
+
+/* Cores e fontes: para outro cliente, mude só aqui */
+:root{
+  --acai:#3F1A4B;--acai-2:#5A2A6A;
+  --coco:#17804F;--coco-dark:#106A40;
+  --manga:#FFC83D;
+  --white:#FFFFFF;--mint:#E9F5EE;--paper:#FFFDF6;--muted:#6B5873;--line:#E7DFEA;--kraft:#E8DDC7;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--body);font-size:17px;line-height:1.55;color:var(--acai);background:var(--white);-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+a{color:inherit}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--coco);outline-offset:3px}
+.wrap{width:min(100% - 32px,1120px);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);line-height:1.02;margin:0;letter-spacing:-.02em}
+h2{font-weight:800;font-size:clamp(34px,6.5vw,52px);margin-bottom:20px}
+
+/* Faixa de demonstração */
+.demo-bar{background:var(--mint);border-bottom:1px solid #D3EADD;font-size:14px;line-height:1.4}
+.demo-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px;padding:9px 0}
+.demo-bar p{margin:0;color:var(--muted)}
+.demo-bar a{font-weight:800;color:var(--coco-dark);text-underline-offset:3px}
+
+/* Topo */
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo svg{width:42px;height:42px;flex:none}
+.logo-name{display:grid;font-family:var(--display);font-weight:800;font-size:25px;line-height:1;letter-spacing:-.02em}
+.logo-name small{font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:.01em;color:var(--muted);margin-top:3px}
+.nav{display:none}
+
+/* Botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border:2px solid transparent;border-radius:14px;font:700 16px/1.1 var(--body);text-decoration:none;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-green{background:var(--coco);color:#fff}
+.btn-green:hover{background:var(--coco-dark)}
+.btn-acai{background:var(--acai);color:#fff}
+.btn-acai:hover{background:var(--acai-2)}
+.btn-ghost{background:transparent;color:var(--acai);border-color:var(--acai)}
+.btn-ghost:hover{background:var(--acai);color:#fff}
+.btn-sm{min-height:42px;padding:0 16px;font-size:15px}
+.btn-wide{width:100%}
+
+/* Abertura */
+.hero{padding:28px 0 56px}
+.hero-in{display:grid;gap:32px}
+.status{display:inline-flex;align-items:center;gap:8px;margin:0;padding:6px 14px 6px 12px;border-radius:999px;background:var(--mint);font-size:14px;font-weight:700}
+.status::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:#9C8DA3}
+.status.is-open::before{background:var(--coco);box-shadow:0 0 0 4px rgba(23,128,79,.18)}
+.hero h1{font-weight:800;font-size:clamp(44px,11.5vw,88px);line-height:.98;margin:16px 0}
+.lead{font-size:clamp(17px,2.3vw,20px);color:var(--muted);max-width:38ch;margin:0 0 24px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-cta .btn{flex:1 1 auto}
+.tags{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.tags li{padding:6px 12px;border:2px solid var(--acai);border-radius:10px;font-weight:700;font-size:14px}
+.fav{background:var(--manga);border-radius:28px;padding:22px 16px 14px}
+.fav h2{font-size:28px;margin:0 6px 12px}
+.fav .items{background:#fff;border-radius:18px;padding:2px 14px}
+.fav .item:last-child{border-bottom:0}
+
+/* Cardápio */
+.menu-sec{padding:24px 0 72px}
+.cats{position:sticky;top:0;z-index:10;display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:12px 16px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cats a{flex:none;display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--line);font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
+.cats a:hover{border-color:var(--acai)}
+.menu-layout{display:grid;gap:40px}
+.cat{scroll-margin-top:80px;padding-top:28px}
+.cat h3{font-weight:800;font-size:30px}
+.cat-note{margin:4px 0 6px;color:var(--muted);font-size:15px;max-width:52ch}
+.items{list-style:none;margin:0;padding:0}
+.item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.item-name{margin:0;font-weight:800;font-size:17px;line-height:1.3}
+.item-desc{margin:2px 0 4px;color:var(--muted);font-size:15px;line-height:1.4}
+.item-price{margin:0;font-weight:800;color:var(--coco-dark);font-variant-numeric:tabular-nums}
+.qty{display:inline-flex;align-items:center;gap:6px;flex:none}
+.qbtn{display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;border:2px solid var(--coco);background:#fff;color:var(--coco-dark);font-weight:800;font-size:22px;line-height:1;cursor:pointer}
+.qbtn-add{background:var(--coco);color:#fff}
+.qbtn:hover{background:var(--coco-dark);border-color:var(--coco-dark);color:#fff}
+.qn{min-width:22px;text-align:center;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* A comanda: o pedido montado */
+.comanda{filter:drop-shadow(0 14px 28px rgba(63,26,75,.18))}
+.paper{background:var(--paper);padding:30px 20px 36px;
+  -webkit-mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/18px 51% repeat-x,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/18px 51% repeat-x;
+          mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/18px 51% repeat-x,conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/18px 51% repeat-x}
+.com-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:2px dashed var(--kraft)}
+.com-head h2{font-size:30px;margin:0}
+.com-close{display:none;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--mint);font-size:26px;line-height:1;cursor:pointer}
+.empty{margin:16px 0 4px;color:var(--muted)}
+.lines{list-style:none;margin:0;padding:0}
+.line{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed var(--kraft)}
+.line-txt{display:grid;line-height:1.3}
+.line-name{font-weight:700;font-size:15px}
+.line-price{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.line .qbtn{width:36px;height:36px;font-size:18px}
+.opts{display:grid;gap:16px;margin:18px 0 0}
+.opts fieldset{border:0;margin:0;padding:0;min-width:0}
+.opts legend,.f>span{display:block;padding:0;margin-bottom:8px;font-weight:800;font-size:14px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{position:relative;display:inline-flex}
+.seg input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.seg span{display:inline-flex;align-items:center;min-height:40px;padding:0 12px;border:2px solid var(--kraft);border-radius:10px;background:#fff;font-weight:700;font-size:14px;cursor:pointer}
+.seg input:checked+span{background:var(--acai);border-color:var(--acai);color:#fff}
+.seg input:focus-visible+span{outline:3px solid var(--coco);outline-offset:2px}
+.f{display:block}
+.f input,.f textarea{display:block;width:100%;padding:11px 14px;border:2px solid var(--kraft);border-radius:10px;background:#fff;font-size:16px;color:var(--acai)}
+.f textarea{min-height:64px;resize:vertical}
+.f input:focus,.f textarea:focus{border-color:var(--acai)}
+.totals{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:18px 0 14px;padding-top:12px;border-top:2px dashed var(--kraft)}
+.totals dt{color:var(--muted)}
+.totals dd{margin:0;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.totals .tot{font-family:var(--display);font-weight:800;font-size:24px;color:var(--acai)}
+.form-error{margin:0 0 10px;color:#B3261E;font-weight:700}
+.send-bar{position:sticky;bottom:0;z-index:1;margin:0 -20px;padding:10px 20px 4px;background:var(--paper)}
+
+/* Horários e endereço */
+.info-sec{padding:64px 0;background:var(--mint)}
+.info-in{display:grid;gap:48px}
+.hours{width:100%;border-collapse:collapse}
+.hours th,.hours td{padding:12px 0;border-bottom:1px solid #CFE6D8;text-align:left;font-weight:600}
+.hours td{text-align:right;font-variant-numeric:tabular-nums}
+.hours .is-today th,.hours .is-today td{color:var(--coco-dark);font-weight:800}
+.hours .is-today th::after{content:" (hoje)";font-weight:600}
+address{font-style:normal;font-size:21px;font-weight:800;line-height:1.35}
+.ref{margin:6px 0 22px;color:var(--muted)}
+.stack{display:grid;gap:10px;max-width:380px}
+
+/* Rodapé */
+.foot{background:var(--acai);color:rgba(255,255,255,.82);padding:36px 0 120px;font-size:15px}
+.foot-in{display:grid;gap:14px}
+.foot p{margin:0}
+.foot strong{color:#fff;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em}
+.foot a{color:#fff;font-weight:800}
+
+/* Celular: barra do pedido e comanda que sobe */
+.scrim{position:fixed;inset:0;z-index:35;background:rgba(63,26,75,.5)}
+.mbar{position:fixed;inset:auto 0 0 0;z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.mbar .btn{justify-content:space-between}
+.mbar .btn.is-empty{justify-content:center}
+@keyframes bump{50%{transform:scale(1.04)}}
+.mbar .btn.bump{animation:bump .25s ease}
+
+/* Aviso de demonstração */
+.modal{width:min(100% - 32px,440px);border:0;border-radius:20px;padding:26px 22px 22px;color:var(--acai)}
+.modal::backdrop{background:rgba(63,26,75,.6)}
+.modal h2{font-size:30px;margin-bottom:10px}
+.modal p{margin:0 0 16px;color:var(--muted)}
+.bubble{margin:0 0 18px;padding:12px 14px;border-radius:14px 14px 14px 4px;background:#DCF8C6;color:#111B21;font-size:15px;line-height:1.5;white-space:pre-wrap;max-height:46vh;overflow:auto}
+.modal form{margin:0}
+
+@media (max-width:899px){
+  .comanda{position:fixed;left:0;right:0;bottom:0;z-index:40;max-height:92vh;overflow-y:auto;padding:0 8px;transform:translateY(105%);visibility:hidden;transition:transform .28s ease,visibility 0s linear .28s}
+  .comanda.is-open{transform:none;visibility:visible;transition:transform .28s ease}
+  .com-close{display:grid}
+}
+@media (min-width:900px){
+  .nav{display:flex;gap:28px;font-weight:700;font-size:15px}
+  .nav a{text-decoration:none}
+  .nav a:hover{color:var(--coco-dark)}
+  .hero{padding:56px 0 88px}
+  .hero-in{grid-template-columns:1.15fr .85fr;gap:64px;align-items:center}
+  .hero-cta .btn{flex:0 0 auto}
+  .menu-layout{grid-template-columns:1fr 370px;gap:56px;align-items:start}
+  .comanda{position:sticky;top:88px;max-height:calc(100vh - 104px);overflow-y:auto}
+  .info-sec{padding:96px 0}
+  .info-in{grid-template-columns:1fr 1fr;gap:80px}
+  .mbar,.scrim{display:none!important}
+  .foot{padding-bottom:36px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="demo-bar" role="note">
+  <div class="wrap demo-in">
+    <p>Site de demonstração. O Coqueiral Lanches é uma lanchonete fictícia.</p>
+    <a href="https://wa.me/558299637875?text=Oi%2C%20Nicolas%21%20Vi%20o%20site%20de%20demonstra%C3%A7%C3%A3o%20da%20lanchonete%20e%20quero%20um%20assim." target="_blank" rel="noopener">Quero um site assim</a>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#inicio" aria-label="Coqueiral Lanches, início">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M21 13c1.5-5.5 8-8.5 14-7-4.5 1.2-8 4.2-10.2 8.4" fill="none" stroke="#17804F" stroke-width="3" stroke-linecap="round"/><path d="M19 13c-1.8-4.6-6.6-6.8-11-5.6 3.4 1.1 6 3.5 7.4 6.8" fill="none" stroke="#17804F" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="25" r="12" fill="#3F1A4B"/><circle cx="16" cy="22.5" r="1.9" fill="#FFC83D"/><circle cx="23.5" cy="22.5" r="1.9" fill="#FFC83D"/><circle cx="19.8" cy="28.5" r="1.9" fill="#FFC83D"/></svg>
+      <span class="logo-name">Coqueiral<small>Lanches</small></span>
+    </a>
+    <nav class="nav" aria-label="Seções do site">
+      <a href="#cardapio">Cardápio</a>
+      <a href="#horarios">Horários</a>
+      <a href="#onde">Onde fica</a>
+    </nav>
+    <a class="btn btn-green btn-sm" href="#cardapio">Fazer pedido</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero" aria-labelledby="titulo">
+    <div class="wrap hero-in">
+      <div>
+        <p class="status js-status" aria-live="polite">Vendo o horário de hoje…</p>
+        <h1 id="titulo">Tapioca, cuscuz e açaí do jeito daqui.</h1>
+        <p class="lead">Monte seu pedido aqui e ele chega pronto no nosso WhatsApp. Retire no balcão ou receba em casa.</p>
+        <div class="hero-cta">
+          <a class="btn btn-green" href="#cardapio">Montar meu pedido</a>
+          <a class="btn btn-ghost" href="#horarios">Ver horários</a>
+        </div>
+        <ul class="tags">
+          <li>Entrega no bairro por R$ 5</li>
+          <li>Retirada no balcão</li>
+          <li>Pix, cartão e dinheiro</li>
+        </ul>
+      </div>
+      <div class="fav">
+        <h2>Os mais pedidos</h2>
+        <ul class="items">
+          <li class="item"><div><p class="item-name">Tapioca de queijo coalho</p><p class="item-price">R$ 10,00</p></div><div class="qty js-qty" data-id="tap-queijo" data-name="Tapioca de queijo coalho" data-price="10"></div></li>
+          <li class="item"><div><p class="item-name">Açaí 500 ml</p><p class="item-price">R$ 20,00</p></div><div class="qty js-qty" data-id="acai-500" data-name="Açaí 500 ml" data-price="20"></div></li>
+          <li class="item"><div><p class="item-name">Cuscuz com carne de sol</p><p class="item-price">R$ 15,00</p></div><div class="qty js-qty" data-id="cus-carne" data-name="Cuscuz com carne de sol" data-price="15"></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-sec" id="cardapio" aria-labelledby="t-cardapio">
+    <div class="wrap">
+      <h2 id="t-cardapio">Cardápio</h2>
+      <nav class="cats" aria-label="Categorias do cardápio">
+        <a href="#tapiocas">Tapiocas</a>
+        <a href="#cuscuz">Cuscuz</a>
+        <a href="#sanduiches">Sanduíches</a>
+        <a href="#acai">Açaí</a>
+        <a href="#bebidas">Bebidas</a>
+      </nav>
+      <div class="menu-layout">
+        <div class="menu">
+          <section class="cat" id="tapiocas" aria-labelledby="c1">
+            <h3 id="c1">Tapiocas</h3>
+            <p class="cat-note">Feitas na hora, na chapa.</p>
+            <ul class="items">
+              <li class="item"><div><p class="item-name">Queijo coalho</p><p class="item-desc">Queijo coalho derretido.</p><p class="item-price">R$ 10,00</p></div><div class="qty js-qty" data-id="tap-queijo" data-name="Tapioca de queijo coalho" data-price="10"></div></li>
+              <li class="item"><div><p class="item-name">Frango com catupiry</p><p class="item-desc">Frango desfiado e catupiry.</p><p class="item-price">R$ 14,00</p></div><div class="qty js-qty" data-id="tap-frango" data-name="Tapioca de frango com catupiry" data-price="14"></div></li>
+              <li class="item"><div><p class="item-name">Carne de sol com queijo</p><p class="item-desc">Carne de sol desfiada e queijo coalho.</p><p class="item-price">R$ 16,00</p></div><div class="qty js-qty" data-id="tap-carne" data-name="Tapioca de carne de sol com queijo" data-price="16"></div></li>
+              <li class="item"><div><p class="item-name">Coco com leite condensado</p><p class="item-desc">A doce da casa.</p><p class="item-price">R$ 12,00</p></div><div class="qty js-qty" data-id="tap-coco" data-name="Tapioca de coco com leite condensado" data-price="12"></div></li>
+            </ul>
+          </section>
+          <section class="cat" id="cuscuz" aria-labelledby="c2">
+            <h3 id="c2">Cuscuz</h3>
+            <p class="cat-note">Cuscuz de milho, servido quentinho.</p>
+            <ul class="items">
+              <li class="item"><div><p class="item-name">Com ovo</p><p class="item-desc">Frito ou mexido: diga na observação.</p><p class="item-price">R$ 9,00</p></div><div class="qty js-qty" data-id="cus-ovo" data-name="Cuscuz com ovo" data-price="9"></div></li>
+              <li class="item"><div><p class="item-name">Com carne de sol</p><p class="item-desc">Carne de sol na manteiga.</p><p class="item-price">R$ 15,00</p></div><div class="qty js-qty" data-id="cus-carne" data-name="Cuscuz com carne de sol" data-price="15"></div></li>
+              <li class="item"><div><p class="item-name">Com calabresa e queijo</p><p class="item-desc">Calabresa acebolada e queijo coalho.</p><p class="item-price">R$ 13,00</p></div><div class="qty js-qty" data-id="cus-cala" data-name="Cuscuz com calabresa e queijo" data-price="13"></div></li>
+            </ul>
+          </section>
+          <section class="cat" id="sanduiches" aria-labelledby="c3">
+            <h3 id="c3">Sanduíches</h3>
+            <ul class="items">
+              <li class="item"><div><p class="item-name">Misto quente</p><p class="item-desc">Pão, presunto e queijo na chapa.</p><p class="item-price">R$ 8,00</p></div><div class="qty js-qty" data-id="san-misto" data-name="Misto quente" data-price="8"></div></li>
+              <li class="item"><div><p class="item-name">X-burguer</p><p class="item-desc">Pão, carne, queijo, alface e tomate.</p><p class="item-price">R$ 15,00</p></div><div class="qty js-qty" data-id="san-xburguer" data-name="X-burguer" data-price="15"></div></li>
+              <li class="item"><div><p class="item-name">X-tudo</p><p class="item-desc">Carne, ovo, bacon, presunto, queijo e salada.</p><p class="item-price">R$ 22,00</p></div><div class="qty js-qty" data-id="san-xtudo" data-name="X-tudo" data-price="22"></div></li>
+            </ul>
+          </section>
+          <section class="cat" id="acai" aria-labelledby="c4">
+            <h3 id="c4">Açaí</h3>
+            <p class="cat-note">Todos vêm com 2 acompanhamentos: granola, banana, leite em pó ou paçoca. Escolha na observação.</p>
+            <ul class="items">
+              <li class="item"><div><p class="item-name">Açaí 300 ml</p><p class="item-price">R$ 14,00</p></div><div class="qty js-qty" data-id="acai-300" data-name="Açaí 300 ml" data-price="14"></div></li>
+              <li class="item"><div><p class="item-name">Açaí 500 ml</p><p class="item-price">R$ 20,00</p></div><div class="qty js-qty" data-id="acai-500" data-name="Açaí 500 ml" data-price="20"></div></li>
+              <li class="item"><div><p class="item-name">Açaí 700 ml</p><p class="item-price">R$ 26,00</p></div><div class="qty js-qty" data-id="acai-700" data-name="Açaí 700 ml" data-price="26"></div></li>
+            </ul>
+          </section>
+          <section class="cat" id="bebidas" aria-labelledby="c5">
+            <h3 id="c5">Bebidas</h3>
+            <ul class="items">
+              <li class="item"><div><p class="item-name">Suco natural 400 ml</p><p class="item-desc">Laranja, maracujá, acerola ou cajá.</p><p class="item-price">R$ 7,00</p></div><div class="qty js-qty" data-id="beb-suco" data-name="Suco natural 400 ml" data-price="7"></div></li>
+              <li class="item"><div><p class="item-name">Água de coco</p><p class="item-desc">Gelada, servida no copo.</p><p class="item-price">R$ 6,00</p></div><div class="qty js-qty" data-id="beb-coco" data-name="Água de coco" data-price="6"></div></li>
+              <li class="item"><div><p class="item-name">Refrigerante lata</p><p class="item-desc">Pergunte os sabores na observação.</p><p class="item-price">R$ 6,00</p></div><div class="qty js-qty" data-id="beb-refri" data-name="Refrigerante lata" data-price="6"></div></li>
+              <li class="item"><div><p class="item-name">Café com leite</p><p class="item-desc">Copo de 200 ml.</p><p class="item-price">R$ 4,00</p></div><div class="qty js-qty" data-id="beb-cafe" data-name="Café com leite" data-price="4"></div></li>
+            </ul>
+          </section>
+        </div>
+
+        <aside class="comanda js-comanda" aria-labelledby="t-pedido">
+          <div class="paper">
+            <div class="com-head">
+              <h2 id="t-pedido">Seu pedido</h2>
+              <button type="button" class="com-close js-close" aria-label="Fechar pedido">×</button>
+            </div>
+            <p class="empty js-empty">Seu pedido está vazio. Toque em + no cardápio para adicionar.</p>
+            <ul class="lines js-lines"></ul>
+            <div class="opts">
+              <fieldset><legend>Como quer receber?</legend>
+                <div class="seg">
+                  <label><input type="radio" name="receber" value="retirada" checked><span>Retirar no balcão</span></label>
+                  <label><input type="radio" name="receber" value="entrega"><span>Entrega (+ R$ 5)</span></label>
+                </div>
+              </fieldset>
+              <label class="f js-end" hidden><span>Endereço da entrega</span><input id="endereco" type="text" autocomplete="street-address" placeholder="Rua, número e ponto de referência"></label>
+              <fieldset><legend>Pagamento</legend>
+                <div class="seg">
+                  <label><input type="radio" name="pagamento" value="Pix" checked><span>Pix</span></label>
+                  <label><input type="radio" name="pagamento" value="Cartão"><span>Cartão</span></label>
+                  <label><input type="radio" name="pagamento" value="Dinheiro"><span>Dinheiro</span></label>
+                </div>
+              </fieldset>
+              <label class="f"><span>Seu nome</span><input id="nome" type="text" autocomplete="given-name" placeholder="Para chamar quando ficar pronto"></label>
+              <label class="f"><span>Observação</span><textarea id="obs" placeholder="Ex.: açaí com granola e banana"></textarea></label>
+            </div>
+            <dl class="totals">
+              <dt>Subtotal</dt><dd class="js-sub">R$ 0,00</dd>
+              <dt>Entrega</dt><dd class="js-fee">Grátis</dd>
+              <dt class="tot">Total</dt><dd class="tot js-tot">R$ 0,00</dd>
+            </dl>
+            <div class="send-bar">
+              <p class="form-error js-error" role="alert" hidden></p>
+              <button type="button" class="btn btn-green btn-wide js-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.5-5.2A8.5 8.5 0 1 1 21 12z"/></svg>Enviar pedido pelo WhatsApp</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-sec" aria-label="Horários e endereço">
+    <div class="wrap info-in">
+      <div id="horarios">
+        <h2>Horários</h2>
+        <table class="hours js-hours">
+          <tbody>
+            <tr data-day="1"><th scope="row">Segunda</th><td>7h às 22h</td></tr>
+            <tr data-day="2"><th scope="row">Terça</th><td>7h às 22h</td></tr>
+            <tr data-day="3"><th scope="row">Quarta</th><td>7h às 22h</td></tr>
+            <tr data-day="4"><th scope="row">Quinta</th><td>7h às 22h</td></tr>
+            <tr data-day="5"><th scope="row">Sexta</th><td>7h às 22h</td></tr>
+            <tr data-day="6"><th scope="row">Sábado</th><td>7h às 22h</td></tr>
+            <tr data-day="0"><th scope="row">Domingo</th><td>16h às 22h</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="onde">
+        <h2>Onde fica</h2>
+        <address>Rua Exemplo, 15, Seu Bairro<br>Maceió, AL</address>
+        <p class="ref">Em frente à parada de ônibus.</p>
+        <div class="stack">
+          <button type="button" class="btn btn-acai js-out" data-link="maps" data-what="o Google Maps com o caminho até a lanchonete">Abrir no Google Maps</button>
+          <button type="button" class="btn btn-ghost js-out" data-link="reviews" data-what="as avaliações reais da lanchonete no Google">Ver avaliações no Google</button>
+          <button type="button" class="btn btn-ghost js-out" data-link="instagram" data-what="o Instagram da lanchonete">Ver o Instagram</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p><strong>Coqueiral Lanches</strong><br>Empresa fictícia, criada para mostrar como fica um site de 1 página.</p>
+    <p>Site feito por <a href="https://aparece-sites.github.io/">Aparece</a>.</p>
+  </div>
+</footer>
+
+<div class="scrim js-scrim" hidden></div>
+<div class="mbar"><button type="button" class="btn btn-green btn-wide js-open">Montar meu pedido</button></div>
+
+<dialog class="modal js-modal" aria-labelledby="m-titulo">
+  <h2 id="m-titulo">Isto é uma demonstração</h2>
+  <p class="js-modal-text"></p>
+  <div class="bubble js-bubble" hidden></div>
+  <form method="dialog"><button class="btn btn-acai btn-wide">Entendi</button></form>
+</dialog>
+
+<script>
+/* ===== CONFIGURAÇÃO: no site de um cliente de verdade, mude só aqui ===== */
+const CONFIG = {
+  demo: true,             // no site do cliente: false
+  whatsapp: "",           // ex.: "5582999999999" (55 + DDD + número, só números)
+  links: { maps: "", reviews: "", instagram: "" },
+  name: "Coqueiral Lanches",
+  tz: "America/Maceio",
+  delivery: 5,            // taxa de entrega em reais
+  // horários em minutos desde 0h (420 = 7h, 1320 = 22h); null = fechado
+  hours: { 0: [960, 1320], 1: [420, 1320], 2: [420, 1320], 3: [420, 1320], 4: [420, 1320], 5: [420, 1320], 6: [420, 1320] }
+};
+/* ======================================================================== */
+
+const DAY = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const smooth = () => matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+function clock() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+    timeZone: CONFIG.tz, weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23"
+  }).formatToParts(new Date()).map(x => [x.type, x.value]));
+  return { wd: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(p.weekday), min: (+p.hour) * 60 + (+p.minute) };
+}
+const hh = m => { const h = Math.floor(m / 60), r = m % 60; return r ? `${h}h${String(r).padStart(2, "0")}` : `${h}h`; };
+
+function renderStatus() {
+  const el = $(".js-status");
+  const now = clock(), today = CONFIG.hours[now.wd];
+  let text = "", open = false;
+  if (today && now.min >= today[0] && now.min < today[1]) {
+    open = true; text = `Aberto agora, até as ${hh(today[1])}`;
+  } else {
+    for (let i = 0; i < 8; i++) {
+      const wd = (now.wd + i) % 7, h = CONFIG.hours[wd];
+      if (!h || (i === 0 && now.min >= h[0])) continue;
+      text = `Fechado agora. Abre ${i === 0 ? "hoje" : i === 1 ? "amanhã" : DAY[wd]} às ${hh(h[0])}`;
+      break;
+    }
+  }
+  el.textContent = text;
+  el.classList.toggle("is-open", open);
+}
+function markToday() {
+  const wd = clock().wd;
+  $$(".js-hours tr").forEach(tr => tr.classList.toggle("is-today", +tr.dataset.day === wd));
+}
+
+/* ---- Pedido ---- */
+const cart = new Map();
+const deliveryOn = () => $('input[name="receber"]:checked').value === "entrega";
+
+function totals() {
+  let sub = 0, count = 0;
+  cart.forEach(it => { sub += it.price * it.qty; count += it.qty; });
+  const fee = deliveryOn() ? CONFIG.delivery : 0;
+  return { sub, count, fee, total: count ? sub + fee : 0 };
+}
+function renderBox(box) {
+  const it = cart.get(box.dataset.id), q = it ? it.qty : 0, n = box.dataset.name;
+  box.innerHTML = q
+    ? `<button type="button" class="qbtn" data-act="dec" aria-label="Tirar 1 ${n}">−</button><span class="qn">${q}</span><button type="button" class="qbtn" data-act="inc" aria-label="Mais 1 ${n}">+</button>`
+    : `<button type="button" class="qbtn qbtn-add" data-act="inc" aria-label="Adicionar ${n}">+</button>`;
+}
+function renderCart() {
+  $(".js-lines").innerHTML = [...cart].map(([id, it]) =>
+    `<li class="line"><div class="line-txt"><span class="line-name">${it.qty}x ${it.name}</span><span class="line-price">${brl(it.qty * it.price)}</span></div><div class="qty js-qty" data-id="${id}" data-name="${it.name}" data-price="${it.price}"></div></li>`
+  ).join("");
+  $(".js-empty").hidden = cart.size > 0;
+  const t = totals();
+  $(".js-sub").textContent = brl(t.sub);
+  $(".js-fee").textContent = deliveryOn() ? brl(CONFIG.delivery) : "Grátis";
+  $(".js-tot").textContent = brl(t.total);
+  const mb = $(".js-open");
+  mb.classList.toggle("is-empty", !t.count);
+  mb.innerHTML = t.count ? `<span>Ver pedido (${t.count})</span><span>${brl(t.total)}</span>` : "Montar meu pedido";
+  $$(".js-qty").forEach(renderBox);
+}
+
+function showDemo(text, bubble) {
+  const m = $(".js-modal");
+  $(".js-modal-text", m).textContent = text;
+  const b = $(".js-bubble", m);
+  b.hidden = !bubble;
+  b.textContent = bubble || "";
+  m.showModal();
+}
+function sendWhatsApp(msg) {
+  if (CONFIG.demo || !CONFIG.whatsapp) {
+    showDemo("No site de verdade, este botão abre o WhatsApp da lanchonete com este pedido pronto:", msg);
+    return;
+  }
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+}
+
+function sendOrder() {
+  const err = $(".js-error");
+  const fail = (text, field) => { err.textContent = text; err.hidden = false; if (field) field.focus(); };
+  if (!cart.size) return fail("Adicione pelo menos 1 item do cardápio.");
+  const entrega = deliveryOn();
+  const end = $("#endereco").value.trim(), nome = $("#nome").value.trim(), obs = $("#obs").value.trim();
+  if (entrega && !end) return fail("Escreva o endereço para a entrega.", $("#endereco"));
+  if (!nome) return fail("Escreva seu nome para a lanchonete saber de quem é o pedido.", $("#nome"));
+  err.hidden = true;
+  const t = totals();
+  const L = [`Olá! Quero fazer um pedido no ${CONFIG.name}.`, ""];
+  cart.forEach(it => L.push(`${it.qty}x ${it.name}: ${brl(it.price * it.qty)}`));
+  L.push("", `Subtotal: ${brl(t.sub)}`);
+  if (entrega) L.push(`Entrega: ${brl(t.fee)}`);
+  L.push(`Total: ${brl(t.total)}`, "");
+  L.push(entrega ? `Receber: entrega em ${end}` : "Receber: retirada no balcão");
+  L.push(`Pagamento: ${$('input[name="pagamento"]:checked').value}`, `Nome: ${nome}`);
+  if (obs) L.push(`Obs.: ${obs}`);
+  sendWhatsApp(L.join("\n"));
+}
+
+/* ---- Comanda no celular ---- */
+const com = $(".js-comanda"), scrim = $(".js-scrim");
+let lastFocus = null;
+function openSheet() {
+  lastFocus = document.activeElement;
+  com.classList.add("is-open");
+  scrim.hidden = false;
+  document.body.classList.add("lock");
+  setTimeout(() => $(".js-close").focus(), 60);
+}
+function closeSheet() {
+  com.classList.remove("is-open");
+  scrim.hidden = true;
+  document.body.classList.remove("lock");
+  if (lastFocus) lastFocus.focus({ preventScroll: true });
+}
+
+document.addEventListener("click", e => {
+  const q = e.target.closest(".qbtn");
+  if (q) {
+    const box = q.closest(".js-qty"), id = box.dataset.id, act = q.dataset.act;
+    const inSheet = !!box.closest(".js-lines");
+    const it = cart.get(id) || { name: box.dataset.name, price: +box.dataset.price, qty: 0 };
+    it.qty += act === "inc" ? 1 : -1;
+    if (it.qty > 0) cart.set(id, it); else cart.delete(id);
+    renderCart();
+    const holder = inSheet ? $(`.js-lines .js-qty[data-id="${id}"]`) : box;
+    const nb = holder && (holder.querySelector(`[data-act="${act}"]`) || holder.querySelector(".qbtn"));
+    if (nb) nb.focus({ preventScroll: true });
+    else if (inSheet) $(".js-send").focus({ preventScroll: true });
+    if (act === "inc") { const mb = $(".js-open"); mb.classList.remove("bump"); void mb.offsetWidth; mb.classList.add("bump"); }
+    return;
+  }
+  const out = e.target.closest(".js-out");
+  if (out) {
+    const url = CONFIG.links[out.dataset.link];
+    if (CONFIG.demo || !url) showDemo(`No site de verdade, este botão abre ${out.dataset.what}.`);
+    else window.open(url, "_blank", "noopener");
+  }
+});
+document.addEventListener("change", e => {
+  if (e.target.name === "receber") { $(".js-end").hidden = !deliveryOn(); renderCart(); }
+});
+$(".js-send").addEventListener("click", sendOrder);
+$(".js-open").addEventListener("click", () => cart.size ? openSheet() : $("#cardapio").scrollIntoView({ behavior: smooth() }));
+$(".js-close").addEventListener("click", closeSheet);
+scrim.addEventListener("click", closeSheet);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && com.classList.contains("is-open")) closeSheet(); });
+
+renderCart();
+renderStatus();
+markToday();
+setInterval(renderStatus, 60000);
+</script>
+</body>
+</html>
