@@ -118,6 +118,14 @@ h2{font-size:clamp(34px,6.4vw,56px);margin-bottom:28px}
 .final h2{margin-bottom:14px}
 .final p{margin:0 auto 28px;max-width:40ch;color:var(--mute)}
 
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{cursor:pointer;font-weight:800;font-size:19px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--sun);font-size:26px;line-height:1;flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin:10px 0 0;color:var(--mute);max-width:60ch}
+.foot a{color:var(--paper);font-weight:800}
 .foot{padding:28px 0 110px;border-top:1px solid var(--line);color:var(--mute);font-size:14px}
 .mbar{position:fixed;inset:auto 0 0 0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(0,0,0,.88);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 
@@ -284,7 +292,20 @@ h2{font-size:clamp(34px,6.4vw,56px);margin-bottom:28px}
     <div class="wrap">
       <h2 id="t-quem">Quem faz</h2>
       <p><b>Sou o Nicolas, de Maceió.</b> Faço sites e cuido do Google de pequenos negócios: barbearia, salão, lanchonete, açaí e outros.</p>
-      <p>Atendo Maceió e outras cidades, tudo por mensagem.</p>
+      <p>Atendo Maceió e outras cidades, tudo por mensagem. Os trabalhos novos aparecem primeiro no Instagram <a href="https://www.instagram.com/aparecesites/" target="_blank" rel="noopener">@aparecesites</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="t-faq">
+    <div class="wrap">
+      <h2 id="t-faq">Perguntas frequentes</h2>
+      <div class="faq">
+        <details><summary>Quanto tempo leva?</summary><p>O Perfil no Google fica pronto em 1 a 3 dias. O site, em até 7 dias depois que você me manda as fotos e as informações.</p></details>
+        <details><summary>Tem mensalidade?</summary><p>Não é obrigatória. O site fica no ar sem custo de servidor. Se quiser que eu cuide das atualizações, tem o plano mensal a partir de R$ 60.</p></details>
+        <details><summary>E se eu não gostar?</summary><p>Você vê uma prévia antes de decidir, e os ajustes já estão incluídos. Só fica pronto quando você aprovar.</p></details>
+        <details><summary>Preciso entender de internet?</summary><p>Não. Você me manda as informações pelo WhatsApp e eu faço o resto.</p></details>
+        <details><summary>Atende fora de Maceió?</summary><p>Sim. Como tudo é por mensagem, atendo qualquer cidade.</p></details>
+      </div>
     </div>
   </section>
 
@@ -298,7 +319,7 @@ h2{font-size:clamp(34px,6.4vw,56px);margin-bottom:28px}
 </main>
 
 <footer class="foot">
-  <div class="wrap">Aparece. Site e Google para o seu negócio. Maceió, AL.</div>
+  <div class="wrap">Aparece. Site e Google para o seu negócio. Maceió, AL.<br>Instagram: <a href="https://www.instagram.com/aparecesites/" target="_blank" rel="noopener">@aparecesites</a></div>
 </footer>
 
 <div class="mbar"><a class="btn btn-sun btn-wide" href="https://wa.me/558299637875?text=Oi%2C%20Nicolas!%20Vi%20o%20site%20da%20Aparece%20e%20quero%20saber%20mais." target="_blank" rel="noopener">Chamar no WhatsApp</a></div>
